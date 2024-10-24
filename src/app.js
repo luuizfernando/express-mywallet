@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt';
 import cors from 'cors';
+import dayjs from 'dayjs';
 import dotenv from 'dotenv';
 import express from 'express';
 import joi from 'joi';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient } from 'mongodb';
 import { v4 as uuid } from 'uuid';
 
 const app = express();
@@ -78,9 +79,11 @@ app.post("/sign-in", async (req, res) => {
 });
 
 app.post("/nova-transacao/:tipo", async (req, res) => {
-    const { type } = req.params;
+    const { tipo } = req.params;
     const { value, description } = req.body;
     const { authorization } = req.headers;
+
+    const today = dayjs().format('DD-MM-YYYY');
 
     const token = authorization?.replace("Bearer ", "");
     if (!token) return res.sendStatus(401);
@@ -95,8 +98,25 @@ app.post("/nova-transacao/:tipo", async (req, res) => {
             return res.status(422).send(errors);
         }
 
-        const transaction = await db.collection("transactions").insertOne({ value, description, type });
+        const transaction = await db.collection("transactions").insertOne({ today, value, description, tipo });
         if (transaction) return res.sendStatus(201);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+app.get("/home", async (req, res) => {
+    const { authorization } = req.headers;
+
+    const token = authorization?.replace("Bearer ", "");
+    if (!token) return res.sendStatus(401);
+
+    try {
+        const sessao = await db.collection("sections").findOne({ token });
+        if (!sessao) return res.sendStatus(401);
+
+        const transactions = await db.collection("transactions").find().toArray();
+        res.send(transactions);
     } catch (err) {
         res.status(500).send(err.message);
     }
