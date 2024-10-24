@@ -5,7 +5,6 @@ import express from 'express';
 import joi from 'joi';
 import { MongoClient, ObjectId } from 'mongodb';
 import { v4 as uuid } from 'uuid';
-import { signUp } from './controllers/usersController.js';
 
 const app = express();
 
@@ -28,6 +27,11 @@ const userSchema = joi.object({
     userName: joi.string().required(),
     email: joi.string().email().required(),
     password: joi.string().required().min(3)
+});
+
+const transactionSchema = joi.object({
+    value: joi.number().precision(2).positive().required(),
+    description: joi.string()
 });
 
 // EndPoints
@@ -65,7 +69,7 @@ app.post("/sign-in", async (req, res) => {
 
         const token = uuid();
         await db.collection("sections").insertOne({ token, userId: user._id });
-        
+
         const { userName } = user;
         res.send({ token, userName });
     } catch (err) {
@@ -73,12 +77,29 @@ app.post("/sign-in", async (req, res) => {
     }
 });
 
-app.post("/nova-transacao/:tipo", (req, res) => {
+app.post("/nova-transacao/:tipo", async (req, res) => {
+    const { type } = req.params;
+    const { value, description } = req.body;
+    const { authorization } = req.headers;
 
-});
+    const token = authorization?.replace("Bearer ", "");
+    if (!token) return res.sendStatus(401);
 
-app.get("/home", async (req, res) => {
+    try {
+        const session = await db.collection("sections").findOne({ token });
+        if (!session) return res.sendStatus(401);
 
+        const validation = transactionSchema.validate(req.body, { abortEarly: false });
+        if (validation.error) {
+            const errors = validation.error.details.map((detail) => detail.message);
+            return res.status(422).send(errors);
+        }
+
+        const transaction = await db.collection("transactions").insertOne({ value, description, type });
+        if (transaction) return res.sendStatus(201);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
 });
 
 app.listen(process.env.PORT, () => console.log(`Servidor rodando na porta ${process.env.PORT}.`));
