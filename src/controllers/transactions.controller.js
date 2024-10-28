@@ -8,7 +8,7 @@ const transactionSchema = joi.object({
 });
 
 export async function makeTransaction(req, res) {
-    const { tipo } = req.params;
+    const { type } = req.params;
     const { value, description } = req.body;
     const { authorization } = req.headers;
 
@@ -27,7 +27,7 @@ export async function makeTransaction(req, res) {
             return res.status(422).send(errors);
         }
 
-        const transaction = await db.collection("transactions").insertOne({ today, value, description, tipo });
+        const transaction = await db.collection("transactions").insertOne({ today, value, description, type });
         if (transaction) return res.sendStatus(201);
     } catch (err) {
         res.status(500).send(err.message);

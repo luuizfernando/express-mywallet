@@ -1,7 +1,6 @@
 import cors from 'cors';
 import express from 'express';
 import router from './routes/index.routes.js';
-import { returnTransactions } from './controllers/transactions.controller.js';
 
 const app = express();
 

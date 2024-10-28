@@ -3,7 +3,7 @@ import { makeTransaction, returnTransactions } from '../controllers/transactions
 
 const transactionsRouter = Router();
 
-transactionsRouter.post("/nova-transacao/:tipo", makeTransaction);
-transactionsRouter.get("/home", returnTransactions);
+transactionsRouter.post("/nova-transacao/:type", makeTransaction);
+transactionsRouter.get("/transactions", returnTransactions);
 
 export default transactionsRouter;
