@@ -1,16 +1,11 @@
 import bcrypt from 'bcrypt';
 import { db } from '../database/database.connection.js';
-import joi from 'joi';
 import { v4 as uuid } from 'uuid';
+import { userSchema } from '../schemas/users.schema.js';
+userSchema
 
 export async function signUp(req, res) {
     const { userName, email, password } = req.body;
-
-    const userSchema = joi.object({
-        userName: joi.string().required(),
-        email: joi.string().email().required(),
-        password: joi.string().required().min(3)
-    });
 
     const validation = userSchema.validate(req.body, { abortEarly: false });
     if (validation.error) {

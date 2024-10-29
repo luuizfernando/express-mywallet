@@ -1,11 +1,6 @@
-import joi from 'joi';
 import dayjs from 'dayjs';
 import { db } from '../database/database.connection.js';
-
-const transactionSchema = joi.object({
-    value: joi.number().precision(2).positive().required(),
-    description: joi.string()
-});
+import { transactionSchema } from '../schemas/transactions.schema.js';
 
 export async function makeTransaction(req, res) {
     const { type } = req.params;
