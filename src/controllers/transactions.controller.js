@@ -15,13 +15,12 @@ export async function makeTransaction(req, res) {
 };
 
 export async function returnTransactions(req, res) {
-    try {
-        const sessao = await db.collection("sections").findOne({ token });
-        if (!sessao) return res.sendStatus(401);
+    const { userId } = res.locals.session;
 
+    try {
         const transactions = await db.collection("transactions").find({ userId }).sort({ date: -1 }).toArray();
         res.send(transactions);
     } catch (err) {
-        res.status(500).send(err.message);
+        res.status(500).send(err.message)
     }
 };
