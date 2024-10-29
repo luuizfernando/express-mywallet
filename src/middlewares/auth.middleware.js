@@ -1,18 +1,16 @@
-import { db } from "../database/database.connection.js";
-
 export async function authValidation(req, res, next) {
     const { authorization } = req.headers;
     const token = authorization?.replace("Bearer ", "");
-    if (!token) return res.sendStatus(401);
+    if (!token) return res.sensStatus(401);
 
     try {
-        const sessao = await db.collection("sections").findOne({ token });
-        if (!sessao) return res.sendStatus(401);
+        const session = await db.collection("sections").findOne({ token });
+        if (!session) return res.status(401).send("Sessão não encontrada");
 
-        res.locals.sessao = sessao;
+        res.locals.session = session;
 
         next();
     } catch (err) {
         res.status(500).send(err.message);
-    }   
-} 
+    }
+};

@@ -41,14 +41,8 @@ export async function signIn(req, res) {
 };
 
 export async function logout(req, res) {
-    const { authorization } = req.headers;
-    const token = authorization?.replace("Bearer ", "");
-    if (!token) return res.sensStatus(401);
-
+    const token = res.locals.session.token;
     try {
-        const session = await db.collection("sections").findOne({ token });
-        if (!session) return res.status(401).send("Sessão não encontrada");
-
         await db.collection("sections").deleteOne({ token });
         res.sendStatus(200);
     } catch (err) {
