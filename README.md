@@ -6,8 +6,8 @@ This is an API for a financial control application built with **Express** and **
 
 - **POST** `/sign-up`: Registers a new user.
 - **POST** `/sign-in`: Logs the user in and returns an authentication token.
-- **POST** `/nova-transacao/:tipo`: Creates a new financial transaction (input or output).
-- **GET** `/home`: Lists all transactions for the authenticated user.
+- **POST** `/transactions`: Creates a new financial transaction (income or expense).
+- **GET** `/transactions`: Lists all transactions for the authenticated user.
 
 ---
 
