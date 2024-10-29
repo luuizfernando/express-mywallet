@@ -15,11 +15,6 @@ export async function makeTransaction(req, res) {
 };
 
 export async function returnTransactions(req, res) {
-    const { authorization } = req.headers;
-
-    const token = authorization?.replace("Bearer ", "");
-    if (!token) return res.sendStatus(401);
-
     try {
         const sessao = await db.collection("sections").findOne({ token });
         if (!sessao) return res.sendStatus(401);
