@@ -7,12 +7,6 @@ userSchema
 export async function signUp(req, res) {
     const { userName, email, password } = req.body;
 
-    const validation = userSchema.validate(req.body, { abortEarly: false });
-    if (validation.error) {
-        const errors = validation.error.details.map((detail) => detail.message);
-        return res.status(422).send(errors);
-    }
-
     try {
         const user = await db.collection("usuarios").findOne({ email });
         if (user) return res.status(409).send("E-mail já cadastrado");
