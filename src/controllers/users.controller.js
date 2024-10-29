@@ -1,9 +1,9 @@
-import { db } from '../database/database.connection.js';
 import bcrypt from 'bcrypt';
-import { v4 as uuid } from 'uuid';
+import { db } from '../database/database.connection.js';
 import joi from 'joi';
+import { v4 as uuid } from 'uuid';
 
-export async function signUp (req, res) {
+export async function signUp(req, res) {
     const { userName, email, password } = req.body;
 
     const userSchema = joi.object({
@@ -31,7 +31,7 @@ export async function signUp (req, res) {
     }
 };
 
-export async function signIn (req, res) {
+export async function signIn(req, res) {
     const { email, password } = req.body;
 
     try {
@@ -46,6 +46,25 @@ export async function signIn (req, res) {
 
         const { userName } = user;
         res.send({ token, userName });
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
+export async function logout(req, res) {
+    const { authorization } = req.headers;
+    const token = authorization?.replace("Bearer ", "");
+
+    if (!token) return res.status(401).send("Token não fornecido");
+
+    try {
+        const session = await db.collection("sections").findOne({ token });
+        if (!session) {
+            return res.status(404).send("Sessão não encontrada");
+        }
+
+        await db.collection("sections").deleteOne({ token });
+        res.sendStatus(204);
     } catch (err) {
         res.status(500).send(err.message);
     }
