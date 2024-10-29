@@ -6,6 +6,7 @@ This is an API for a financial control application built with **Express** and **
 
 - **POST** `/sign-up`: Registers a new user.
 - **POST** `/sign-in`: Logs the user in and returns an authentication token.
+- - **POST** `/sign-out`: Disconnect the user.
 - **POST** `/transactions`: Creates a new financial transaction (income or expense).
 - **GET** `/transactions`: Lists all transactions for the authenticated user.
 
