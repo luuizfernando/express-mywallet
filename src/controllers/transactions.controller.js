@@ -7,7 +7,7 @@ export async function makeTransaction(req, res) {
     const today = dayjs().format('DD-MM-YYYY');
 
     try {
-        const transaction = await db.collection("transactions").insertOne({ today, userId, value: Number(value), description, type  });
+        const transaction = await db.collection("transactions").insertOne({ today, userId, value: Number(value), description, type });
         if (transaction) return res.sendStatus(201);
     } catch (err) {
         res.status(500).send(err.message);
@@ -24,7 +24,7 @@ export async function returnTransactions(req, res) {
         const sessao = await db.collection("sections").findOne({ token });
         if (!sessao) return res.sendStatus(401);
 
-        const transactions = await db.collection("transactions").find().toArray();
+        const transactions = await db.collection("transactions").find({ userId }).sort({ date: -1 }).toArray();
         res.send(transactions);
     } catch (err) {
         res.status(500).send(err.message);
