@@ -6,7 +6,7 @@ export async function authValidation(req, res, next) {
     if (!token) return res.sendStatus(401);
 
     try {
-        const session = await db.collection("sections").findOne({ token });
+        const session = await db.collection("sessions").findOne({ token });
         if (!session) return res.status(401).send("Sessão não encontrada");
 
         res.locals.session = session;

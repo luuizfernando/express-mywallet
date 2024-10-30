@@ -1,6 +1,5 @@
-import dayjs from "dayjs"
-import { db } from "../database/database.connection.js"
-import { ObjectId } from "mongodb"
+import dayjs from "dayjs";
+import { db } from "../database/database.connection.js";
 
 export async function createTransaction(req, res) {
     const { value, description, type } = req.body
