@@ -12,6 +12,12 @@ This is an API for a financial control application built with **Express** and **
 
 ---
 
+### 🌐 Base URL
+
+The API is deployed at: [https://mywallet-api-c0zk.onrender.com](https://mywallet-api-c0zk.onrender.com)
+
+---
+
 ## 🛠️ Technologies
 
 - **JavaScript (ES6+)** - Use of modern language resources.
