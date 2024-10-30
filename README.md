@@ -96,7 +96,7 @@ To run the project locally, follow the steps below:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/seu-usuario/financial-transactions-api.git
+    git clone https://github.com/seu-usuario/financial-transactions-api.git](https://github.com/luuizfernando/express-mywallet.git
     ```
 
 2. Install dependencies:
