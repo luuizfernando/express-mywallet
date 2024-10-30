@@ -1,9 +1,9 @@
 import { Router } from "express";
-import transactionsRouter from "./transactions.routes.js";
-import usersRouter from "./users.routes.js";
+import authRouter from "./auth.routes.js";
+import transactionRouter from "./transactions.routes.js";
 
 const router = Router();
-router.use(transactionsRouter);
-router.use(usersRouter);
+router.use(authRouter);
+router.use(transactionRouter);
 
 export default router;

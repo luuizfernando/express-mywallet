@@ -1,13 +1,14 @@
-import { Router } from 'express';
-import { makeTransaction, returnTransactions } from '../controllers/transactions.controller.js';
-import { authValidation } from '../middlewares/auth.middleware.js';
-import { validateSchema } from '../middlewares/validateSchema.middleware.js';
-import { transactionSchema } from '../schemas/transactions.schema.js';
+import { Router } from "express";
+import { createTransaction, getTransactions } from "../controllers/transaction.controllers.js";
+import { authValidation } from "../middlewares/authValidation.middleware.js";
+import { validateSchema } from "../middlewares/validateSchema.middleware.js";
+import { transactionSchema } from "../schemas/transaction.schemas.js";
 
-const transactionsRouter = Router();
+const transactionRouter = Router();
 
-transactionsRouter.use(authValidation);
-transactionsRouter.post("/transactions", validateSchema(transactionSchema), makeTransaction);
-transactionsRouter.get("/transactions", returnTransactions);
+transactionRouter.use(authValidation);
 
-export default transactionsRouter;
+transactionRouter.post("/transactions", validateSchema(transactionSchema), createTransaction);
+transactionRouter.get("/transactions", getTransactions);
+
+export default transactionRouter;
