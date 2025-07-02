@@ -133,7 +133,7 @@ The server will be available at `http://localhost:5000`.
 
 ## 👤 Developer
 
-Developed by [Luiz Fernando](https://github.com/luuizfernando). Feel free to get in touch and contribute to the project!
+Developed by [Luiz Fernando](https://www.linkedin.com/in/luizfernando-dalpra/). Feel free to get in touch and contribute to the project!
 
 ---
 
